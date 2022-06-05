@@ -1,6 +1,7 @@
 import pygame
 from checkers import *
 
+
 def get_pos_by_mouse(pos):
     x, y = pos
     row =  y // SQUARE_SIZE
@@ -20,11 +21,7 @@ def main() -> None:
     board = Board()
 
     board.render(WINDOW)
-
-    piece =  board.get_piece(0,1)
-    board.move_piece(piece, 4, 3)
-
-    board.render(WINDOW)
+    pygame.display.update()
 
 
     while run:
@@ -33,14 +30,13 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            
             if event.type == pygame.MOUSEBUTTONDOWN:
                 row, col = get_pos_by_mouse(pygame.mouse.get_pos())
                 piece =  board.get_piece(row,col)
                 board.move_piece(piece, 4, 3)
-                board.render(WINDOW)
+                board.draw_pieces(WINDOW)
                 pygame.display.update()
-
-        pygame.display.update()
 
     pygame.quit()
 

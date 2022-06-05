@@ -11,7 +11,7 @@ class Piece:
         self.col =  col
         self.color =  color
         self.king = False
-
+        
         self.calc_pos()
 
         if self.color == BLACK:
@@ -37,8 +37,8 @@ class Piece:
         self.y = SQUARE_SIZE  * self.row + SQUARE_SIZE // 2
     
     def move(self, row, col):
-        self.row =  row
-        self.col =  col
+        self.row = row
+        self.col = col
         self.calc_pos()
 
     def __repr__(self) -> str:
