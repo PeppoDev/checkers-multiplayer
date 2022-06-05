@@ -1,42 +1,43 @@
 import pygame
 from checkers import *
 
+# credits stackoverflow + indian guy + mind voices
+
 
 def get_pos_by_mouse(pos):
     x, y = pos
-    row =  y // SQUARE_SIZE
-    col =  x // SQUARE_SIZE
-    return row,col
+    row = y // Metrics.SQUARE_SIZE.value
+    col = x // Metrics.SQUARE_SIZE.value
+    return row, col
+
 
 FPS = 60
-WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 
-pygame.display.set_caption("Checkers")
+WINDOW = pygame.display.set_mode((Metrics.WIDTH.value, Metrics.HEIGHT.value))
+pygame.display.set_caption("Checkkkers")
+
 
 def main() -> None:
     run = True
 
     clock = pygame.time.Clock()
 
-    board = Board()
-
-    board.render(WINDOW)
-    pygame.display.update()
-
+    game = Game(WINDOW)
 
     while run:
         clock.tick(FPS)
 
+        if(game.get_winner() != None):
+            print(game.get_winner())
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 row, col = get_pos_by_mouse(pygame.mouse.get_pos())
-                piece =  board.get_piece(row,col)
-                board.move_piece(piece, 4, 3)
-                board.draw_pieces(WINDOW)
-                pygame.display.update()
+                game.select_piece(row, col)
+                game.update()
 
     pygame.quit()
 

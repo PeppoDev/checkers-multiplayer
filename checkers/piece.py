@@ -1,41 +1,40 @@
 from typing import Tuple
 
 import pygame
-from .constants import BLACK, SQUARE_SIZE, GREY, CROWN
+from .constants import Metrics, Colors, Assets
+
 
 class Piece:
     PADDING = 10
-    OUTLINE = 2
-    def __init__(self, row: int, col: int, color: Tuple[int,int,int]) -> None:
-        self.row =  row
-        self.col =  col
-        self.color =  color
+    OUTLINE = 4
+
+    def __init__(self, row: int, col: int, color: Tuple[int, int, int]) -> None:
+        self.row = row
+        self.col = col
+        self.color = color
         self.king = False
-        
         self.calc_pos()
 
-        if self.color == BLACK:
-            self.direction = -1
-        else:
-            self.direction = 1
-
-
     def make_king(self):
-        self.king =  True
+        self.king = True
 
-    def render(self, window):
-        radius =  SQUARE_SIZE // 2 - self.PADDING
+    def render(self, window, turn: any):
+        radius = Metrics.SQUARE_SIZE.value // 2 - self.PADDING
 
-        pygame.draw.circle(window, GREY, (self.x, self.y), radius + self.OUTLINE)
+        border_color = Colors.GREEN.value if turn == self.color else Colors.GREY.value
+
+        pygame.draw.circle(window, border_color,
+                           (self.x, self.y), radius + self.OUTLINE)
         pygame.draw.circle(window, self.color, (self.x, self.y), radius)
-        
+
         if self.king:
-            window.blit(CROWN, (self.x -  CROWN.get_width()//2, self.y - CROWN.get_height()//2))
+            window.blit(Assets.CROWN.value, (self.x - Assets.CROWN.value.get_width() //
+                        2, self.y - Assets.CROWN.value.get_height()//2))
 
     def calc_pos(self):
-        self.x = SQUARE_SIZE  * self.col + SQUARE_SIZE // 2
-        self.y = SQUARE_SIZE  * self.row + SQUARE_SIZE // 2
-    
+        self.x = Metrics.SQUARE_SIZE.value * self.col + Metrics.SQUARE_SIZE.value // 2
+        self.y = Metrics.SQUARE_SIZE.value * self.row + Metrics.SQUARE_SIZE.value // 2
+
     def move(self, row, col):
         self.row = row
         self.col = col
