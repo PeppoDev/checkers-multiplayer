@@ -8,11 +8,11 @@ class Piece:
     PADDING = 10
     OUTLINE = 4
 
-    def __init__(self, row: int, col: int, color: Tuple[int, int, int]) -> None:
+    def __init__(self, row: int, col: int, color: Tuple[int, int, int], king=False) -> None:
         self.row = row
         self.col = col
         self.color = color
-        self.king = False
+        self.king = king or False
         self.calc_pos()
 
     def make_king(self):
@@ -41,4 +41,4 @@ class Piece:
         self.calc_pos()
 
     def __repr__(self) -> str:
-        return str(self.color)
+        return str({"color": self.color, "col": self.col, "row": self.row, "king": self.king})

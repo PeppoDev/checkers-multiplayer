@@ -2,7 +2,7 @@ from pygame import Surface
 import pygame
 
 from checkers.board import Board
-from checkers.constants import Metrics, Players, Colors
+from checkers.constants import Metrics, Mode, Players, Colors
 
 
 class Game:
@@ -16,32 +16,36 @@ class Game:
         self.turn = Players.FIRST
         self.valid_moves = {}
         self.selected = None
+        self.mode = Mode.ONLINE
 
-    def update(self):
+    def update(self, board=None):
+        if board:
+            self.board.board = board
+
         self.board.render(self.window, self.turn.value)
         self._draw_valid_moves(self.valid_moves)
-        pygame.display.update()
 
     def reset(self):
         self._ignite()
 
     def select_piece(self, row, col):
         if self.selected:
-            result = self._move(row, col)
+            result = self.move(row, col)
             if not result:
                 self.selected = None
                 self.select_piece(row, col)
+            else:
+                return True
 
         piece = self.board.get_piece(row, col)
 
         if piece and piece.color == self.turn.value:
             self.selected = piece
             self.valid_moves = self.board.get_valid_moves(piece)
-            return True
 
         return False
 
-    def _move(self, row, col):
+    def move(self, row, col):
         piece_target = self.board.get_piece(row, col)
         if self.selected and not piece_target and (row, col) in self.valid_moves:
             self.board.move_piece(self.selected, row, col)
@@ -56,8 +60,8 @@ class Game:
         return True
 
     def change_turn(self):
-        self.valid_moves = {}
 
+        self.valid_moves = {}
         if self.turn == Players.FIRST:
             self.turn = Players.SECOND
         else:

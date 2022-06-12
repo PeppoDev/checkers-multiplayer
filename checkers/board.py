@@ -35,9 +35,16 @@ class Board:
     def _draw_pieces(self, window, turn):
         self._draw_cubes(window)
         for row in range(len(self.board)):
-            for piece in self.board[row]:
+            for col, piece in enumerate(self.board[row]):
                 if piece:
-                    piece.render(window, turn)
+                    if isinstance(piece, Piece):
+                        piece.render(window, turn)
+                    else:
+                        new_piece = Piece(
+                            piece["row"], piece["col"], piece["color"], piece["king"])
+                        self.board[row][col] = new_piece
+
+                        new_piece.render(window, turn)
 
     def render(self, window, turn):
         if len(self.board) == 0:
